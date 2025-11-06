@@ -3,7 +3,7 @@
 # Script demonstrating to run WGS analysis and call germline variants in a human WGS paired end reads 2 X 100bp
 # Using GATK4
 
-# Before starting generate a folder structure in your project folder:
+# Before starting generate a folder structure in your project folder:ter
 # mkidr reads aligned_reads scripts data results
 
 
@@ -50,3 +50,25 @@ if [ ! -d "/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomic
 else
     echo "supporting_files directory already exists — skipping downloads."
 fi
+
+######################################################################################################################################################
+################################################### Variant Calling Steps ############################################################################
+######################################################################################################################################################
+
+# directories
+ref="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/supporting_files/hg38/hg38.fa"
+known_sites="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/supporting_files/hg38/Homo_sapiens_assembly38.dbsnp138.vcf"
+aligned_reads="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/aligned_reads"
+reads="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/reads"
+results="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/results"
+data="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/data"
+
+
+# -----------------------------
+# STEP 1: QC - Run fastqc
+# -----------------------------
+
+echo "STEP 1: QC - Run fastqc"
+
+fastqc ${reads}/SRR062634_1.filt.fastq.gz -o ${reads}/
+fastqc ${reads}/SRR062634_2.filt.fastq.gz -o ${reads}/
