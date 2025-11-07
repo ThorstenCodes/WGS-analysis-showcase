@@ -70,5 +70,19 @@ data="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS
 
 echo "STEP 1: QC - Run fastqc"
 
-fastqc ${reads}/SRR062634_1.filt.fastq.gz -o ${reads}/
-fastqc ${reads}/SRR062634_2.filt.fastq.gz -o ${reads}/
+#fastqc ${reads}/SRR062634_1.filt.fastq.gz -o ${reads}/
+#fastqc ${reads}/SRR062634_2.filt.fastq.gz -o ${reads}/
+
+# No trimming required, as quality of reads look okay.
+
+# ----------------------------------------
+# STEP 2: Map to reference using BAM-MEM
+# ---------------------------------------
+
+echo "STEP 2: Map to refenece $(basename "$ref" .fa) genome using BWA-MEM
+
+# BWA index reference
+bwa index ${ref}
+
+# BWA alignment
+bwa mem -t 4 -R "@RG\tID:SRR062634\tPL:ILLUMINA\tSM:SRR062634" ${ref} ${reads}/SRR062634_1.filt.fastq.gz ${reads}/SRR062634_2.filt.fastq.gz > ${aligned_reads}/SRR062634_paired.sam
