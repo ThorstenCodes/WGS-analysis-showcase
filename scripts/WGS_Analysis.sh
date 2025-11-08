@@ -79,10 +79,14 @@ echo "STEP 1: QC - Run fastqc"
 # STEP 2: Map to reference using BAM-MEM
 # ---------------------------------------
 
-echo "STEP 2: Map to refenece $(basename "$ref" .fa) genome using BWA-MEM
+echo "STEP 2: Map to refenece $(basename "$ref" .fa) genome using BWA-MEM"
 
 # BWA index reference
 bwa index ${ref}
 
 # BWA alignment
 bwa mem -t 4 -R "@RG\tID:SRR062634\tPL:ILLUMINA\tSM:SRR062634" ${ref} ${reads}/SRR062634_1.filt.fastq.gz ${reads}/SRR062634_2.filt.fastq.gz > ${aligned_reads}/SRR062634_paired.sam
+
+# ------------------------------------------
+# STEP 3: Mark Duplicates and Sort - GATK4
+# ------------------------------------------
