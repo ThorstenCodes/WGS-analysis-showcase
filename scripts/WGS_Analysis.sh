@@ -90,3 +90,11 @@ bwa mem -t 4 -R "@RG\tID:SRR062634\tPL:ILLUMINA\tSM:SRR062634" ${ref} ${reads}/S
 # ------------------------------------------
 # STEP 3: Mark Duplicates and Sort - GATK4
 # ------------------------------------------
+
+echo "STEP 3: Mark Duplicates and Sort - GATK4"
+
+gatk MarkDuplicatesSpark -I ${aligned_reads}/SRR062634.paired.sam -O ${aligned_reads}/SRR062634_sorted_dedup_reads.bam
+
+# ------------------------------------------
+# STEP 4: Base Quality Requalibration
+# ------------------------------------------
