@@ -98,3 +98,15 @@ gatk MarkDuplicatesSpark -I ${aligned_reads}/SRR062634.paired.sam -O ${aligned_r
 # ------------------------------------------
 # STEP 4: Base Quality Requalibration
 # ------------------------------------------
+
+echo "STEP 4: Base quality recalibration"
+
+# 1. Build the model for requalibration using the variants in the reference
+gatk BaseRecalibrator -I ${aligned_reads}/SRR062634_sorted_dedup_reads.bam -R ${ref} --known-sites ${known_sites} -O ${data}/recal_data.table
+
+# 2. Adjust Base qualitiy Score
+gatk ApplyBQSR -I ${aligned_reads}/SRR062634_sorted_dedup_reads.bam -R ${ref} --bqsr-recal-file ${data}/recal_data.table -O ${aligned_reads}/SRR062634_sorted_dedup_bqsr_reads.bam
+
+# ----------------------------------------------------
+# STEP 5: Collect Alignment and Insert Size Metrices
+# ----------------------------------------------------
