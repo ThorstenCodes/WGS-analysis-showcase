@@ -134,3 +134,14 @@ gatk CollectInsertSizeMetrics \
     INPUT=${aligned_reads}/SRR062634_sorted_dedup_bqsr_reads.bam
     OUTPUT=${aligned_reads}/Insert_size_metrics.txt \
     HISTOGRAM_FILE=${aligned_reads}/insert_size_histogram.pdf
+
+# ----------------------------------------------------
+# STEP 6: Call Variants - gatk haplotype caller
+# ----------------------------------------------------
+
+echo "STEP 6: Call Variants - gatk haplotype caller"
+
+gatk HaplotypeCaller \
+    -R ${ref} \
+    -I ${aligned_reads}/SRR062634_sorted_dedup_bqsr_reads.bam \
+    -O ${results}/raw_variants.vcf
