@@ -85,7 +85,12 @@ echo "STEP 2: Map to refenece $(basename "$ref" .fa) genome using BWA-MEM"
 bwa index ${ref}
 
 # BWA alignment
-bwa mem -t 4 -R "@RG\tID:SRR062634\tPL:ILLUMINA\tSM:SRR062634" ${ref} ${reads}/SRR062634_1.filt.fastq.gz ${reads}/SRR062634_2.filt.fastq.gz > ${aligned_reads}/SRR062634_paired.sam
+bwa mem \
+  -t 4 \
+  -R "@RG\tID:SRR062634\tPL:ILLUMINA\tSM:SRR062634" \
+  ${ref} \
+  ${reads}/SRR062634_1.filt.fastq.gz \
+  ${reads}/SRR062634_2.filt.fastq.gz > ${aligned_reads}/SRR062634_paired.sam
 
 # ------------------------------------------
 # STEP 3: Mark Duplicates and Sort - GATK4
@@ -102,11 +107,30 @@ gatk MarkDuplicatesSpark -I ${aligned_reads}/SRR062634.paired.sam -O ${aligned_r
 echo "STEP 4: Base quality recalibration"
 
 # 1. Build the model for requalibration using the variants in the reference
-gatk BaseRecalibrator -I ${aligned_reads}/SRR062634_sorted_dedup_reads.bam -R ${ref} --known-sites ${known_sites} -O ${data}/recal_data.table
+gatk BaseRecalibrator \
+    -I ${aligned_reads}/SRR062634_sorted_dedup_reads.bam \
+    -R ${ref} --known-sites ${known_sites} \
+    -O ${data}/recal_data.table
 
 # 2. Adjust Base qualitiy Score
-gatk ApplyBQSR -I ${aligned_reads}/SRR062634_sorted_dedup_reads.bam -R ${ref} --bqsr-recal-file ${data}/recal_data.table -O ${aligned_reads}/SRR062634_sorted_dedup_bqsr_reads.bam
+gatk ApplyBQSR \
+    -I ${aligned_reads}/SRR062634_sorted_dedup_reads.bam \
+    -R ${ref} --bqsr-recal-file ${data}/recal_data.table \
+    -O ${aligned_reads}/SRR062634_sorted_dedup_bqsr_reads.bam
 
 # ----------------------------------------------------
 # STEP 5: Collect Alignment and Insert Size Metrices
 # ----------------------------------------------------
+
+echo "STEP 5: Collect Alignment and Insert Size Metrices"
+
+gatk CollectAlignmentSummaryMetrices \
+      R=${ref} \
+      I=${aligned_reads}/SRR062634_sorted_dedup_bqsr_reads.bam \
+      O=${aligned_reads}/alignment_metrics.txt
+
+
+gatk CollectInsertSizeMetrics \
+    INPUT=${aligned_reads}/SRR062634_sorted_dedup_bqsr_reads.bam
+    OUTPUT=${aligned_reads}/Insert_size_metrics.txt \
+    HISTOGRAM_FILE=${aligned_reads}/insert_size_histogram.pdf
