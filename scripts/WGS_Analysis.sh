@@ -145,3 +145,17 @@ gatk HaplotypeCaller \
     -R ${ref} \
     -I ${aligned_reads}/SRR062634_sorted_dedup_bqsr_reads.bam \
     -O ${results}/raw_variants.vcf
+
+# extract SNP and Indels
+
+gatk SelectVariants \
+    -R ${ref} \
+    -V ${results}/raw_variants.vcf \
+    --select_type SNP \
+    -O ${results}/raw_snps.vcf
+
+gatk SelectVariants \
+    -R ${ref} \
+    -V ${results}/raw_variants.vcf \
+    --select_type INDEL \
+    -O ${results}/raw_indels.vcf
