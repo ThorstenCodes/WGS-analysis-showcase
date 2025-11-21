@@ -56,12 +56,13 @@ fi
 ######################################################################################################################################################
 
 # directories
-ref="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/supporting_files/hg38/hg38.fa"
-known_sites="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/supporting_files/hg38/Homo_sapiens_assembly38.dbsnp138.vcf"
-aligned_reads="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/aligned_reads"
-reads="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/reads"
-results="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/results"
-data="/Users/thorsten/code/ThorstenCodes/Bioinformatics_TK/Projects/Genomics_WGS/data"
+BASE="/GENOMICS_WGS"
+ref="$BASE/supporting_files/hg38/hg38.fa"
+known_sites="$BASE/supporting_files/hg38/Homo_sapiens_assembly38.dbsnp138.vcf"
+aligned_reads="$BASE/aligned_reads"
+reads="$BASE/reads"
+results="$BASE/results"
+data="$BASE/data"
 
 
 # -----------------------------
